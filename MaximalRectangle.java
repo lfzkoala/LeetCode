@@ -88,3 +88,101 @@ class Solution {
     }
 }
 
+/*
+方法2：简化版方法1并且逻辑更加合理一些
+*/
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0) return 0;
+        int[] height = new int[matrix[0].length];
+        int result = 0;
+
+        for(int i=0; i<matrix.length; i++){
+            for(int j=0; j<matrix[0].length; j++){
+                if(matrix[i][j] == '0'){
+                    height[j] = 0;
+                    continue;
+                }
+
+                height[j]++;
+
+                for(int curr = j-1, pre = height[j]; curr>=0; curr--){
+                    if(height[curr] == 0) break;
+                    pre = Math.min(pre, height[curr]);
+                    result = Math.max(result, pre*(j-curr+1));
+                }
+
+                result = Math.max(result, height[j]);
+            }
+        }
+        return result;
+
+    }
+}
+
+/*
+方法3：Dynamic Programming 方法最自然最好记
+
+        The DP solution proceeds row by row, starting from the first row. Let the maximal rectangle area at row i and column j be computed by [right(i,j) - left(i,j)+1]*height(i,j).
+        All the 3 variables left, right, and height can be determined by the information from previous row, and also information from the current row. So it can be regarded as a DP solution. The transition equations are:
+        left(i,j) = max(left(i-1,j), cur_left), cur_left can be determined from the current row
+        right(i,j) = min(right(i-1,j), cur_right), cur_right can be determined from the current row
+        height(i,j) = height(i-1,j) + 1, if matrix[i][j]=='1';
+        height(i,j) = 0, if matrix[i][j]=='0'
+*/
+
+class Solution {
+
+    public int maximalRectangle(char[][] matrix) {
+
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0) return 0;
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        int[] height = new int[n];
+        int[] left = new int[n];
+        int[] right = new int[n];
+
+        Arrays.fill(right, n-1);
+
+        int result = 0;
+
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+
+                if(matrix[i][j] == '1'){
+                    height[j]++;
+                }else{
+                    height[j]=0;
+                }
+            }
+
+            int leftBoundary = 0;
+            for(int j=0; j<n; j++){
+                if(matrix[i][j]=='1'){
+                    left[j] = Math.max(left[j], leftBoundary);
+                }else{
+                    left[j] = 0;
+                    leftBoundary = j+1;
+                }
+            }
+
+            int rightBoundary = n-1;
+            for(int j=n-1; j>=0; j--){
+                if(matrix[i][j] == '1'){
+                    right[j] = Math.min(right[j], rightBoundary);
+                }else{
+                    right[j] = n-1;
+                    rightBoundary = j-1;
+                }
+            }
+
+            for(int j=0; j<n; j++){
+                result = Math.max(result, height[j]*(right[j]-left[j]+1));
+            }
+
+        }
+        return result;
+    }
+}
