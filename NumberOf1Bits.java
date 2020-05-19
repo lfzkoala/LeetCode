@@ -30,7 +30,7 @@ Number of 1 Bits
         If this function is called many times, how would you optimize it?
 
         反复计算n &= (n-1) 直到n=0.
-        
+
  */
 
 public class Solution {
