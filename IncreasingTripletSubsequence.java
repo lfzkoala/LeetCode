@@ -13,7 +13,7 @@ Increasing Triplet Subsequence
         Input: [5,4,3,2,1]
         Output: false
         方法：
-        
+
  */
 class Solution {
     public boolean increasingTriplet(int[] nums) {
