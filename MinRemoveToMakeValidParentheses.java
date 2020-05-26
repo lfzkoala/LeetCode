@@ -54,7 +54,7 @@ Minimum Remove to Make Valid Parentheses
         We mark removed parentheses with '*', and erase all of them in the end.
 
         还有一个方法2 stack with tracking, 但是不如这个好理解
-        
+
  */
 
 class Solution {
