@@ -22,7 +22,7 @@ Top K Frequent Words
         Try to solve it in O(n log k) time and O(n) extra space.
 
         方法：定义PriorityQueue按照出现次数排列即可 难点主要是如何定义PriorityQueue.
-        
+
  */
 class Solution {
     public List<String> topKFrequent(String[] words, int k) {
