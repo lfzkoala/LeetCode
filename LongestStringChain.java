@@ -16,7 +16,7 @@ Longest String Chain
         1 <= words[i].length <= 16
         words[i] only consists of English lowercase letters.
         答案：方法1 用hashmap存储对每个string对应的最长的string chain并且不断更新结果max 最后输出max
-        
+
  */
 
 class Solution {
