@@ -60,7 +60,7 @@ private static int[][] localRegion = {
         groupId = (x + y - 2) / 3 + 1;
 
         Then we get the final code:
-        
+
  */
 class Solution {
     private static int[][] localRegion = {
