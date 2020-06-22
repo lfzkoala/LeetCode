@@ -116,7 +116,7 @@ public class FileSystem {
 方法2： 用TreeMap
         Used TreeMap to avoid sorting the list as insertion takes O(logN).
         GetList method takes O(N)
-        
+
  */
 
 public class FileSystem {
@@ -197,5 +197,97 @@ public class FileSystem {
 
             return list;
         }
+    }
+}
+/*
+方法3：Using TreeNode
+
+
+ */
+class FileSystem {
+
+    public class TrieNode {
+        boolean isFile = false;
+        String data = "";
+        Map<String, TrieNode> children = new HashMap<>();
+    }
+
+    TrieNode root = null;
+    public FileSystem() {
+        root = new TrieNode();
+    }
+
+    public void mkdir(String path) {
+        String[] dirs = path.split("/");
+        TrieNode node = root;
+        for(String dir : dirs) {
+            if (dir.length() == 0) continue;
+            if (!node.children.containsKey(dir)) {
+                TrieNode newNode = new TrieNode();
+                node.children.put(dir, newNode);
+            }
+            node = node.children.get(dir);
+        }
+    }
+
+
+    public void addContentToFile(String filePath, String content) {
+        String[] dirs = filePath.split("/");
+        TrieNode node = root;
+        for (String dir : dirs) {
+            if (dir.length() == 0) continue;
+            if (!node.children.containsKey(dir)) {
+                TrieNode newNode = new TrieNode();
+                node.children.put(dir, newNode);
+            }
+            node = node.children.get(dir);
+        }
+        node.isFile = true;
+        node.data += content; // append
+
+    }
+
+    public String readContentFromFile(String filePath) {
+        String[] dirs = filePath.split("/");
+        TrieNode node = root;
+        for (String dir : dirs) {
+            if (dir.length() == 0) continue;
+            if (!node.children.containsKey(dir)) {
+                TrieNode newNode = new TrieNode();
+                node.children.put(dir, newNode);
+            }
+            node = node.children.get(dir);
+        }
+        if (!node.isFile) return "";
+        return node.data;
+    }
+
+    public List<String> ls(String path) {
+        List<String> result = new ArrayList<>();
+
+        String[] dirs = path.split("/");
+        TrieNode node = root;
+
+        String name = "";
+        for (String dir : dirs) {
+            if (dir.length() == 0) continue;
+            if (!node.children.containsKey(dir)) {
+                return result;
+            }
+            node = node.children.get(dir);
+            name = dir; // saving this - watch this!!!
+        }
+
+        if (node.isFile) {
+            result.add(name);  // adding the name above!!1
+        } else {
+            for (String key : node.children.keySet()) {
+                result.add(key);
+            }
+        }
+
+        Collections.sort(result);
+
+        return result;
     }
 }
