@@ -24,54 +24,64 @@ Course Schedule II
  */
 
 class Solution {
-
-    private int idx;
-
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        idx = numCourses-1;
 
-        int[] visited = new int[numCourses];
-        int[] result = new int[numCourses];
+        //if(numCourses == 0 || prerequisites == null || prerequisites.length == 0) return new int[0];
 
-        List<List<Integer>> graph = new ArrayList<>();
+        List<List<Integer>> graph = new ArrayList<List<Integer>>(numCourses);
 
-        for(int i=0; i<numCourses; i++){
-            graph.add(new ArrayList<>());
+        // create the number of courses
+        for(int i = 0; i < numCourses; i++){
+            graph.add(new ArrayList<Integer>());
         }
 
-        for(int i=0; i<prerequisites.length; i++){
+        //populate the courses, say example --> [1,0][2,0][3,0][4,0][4,3] numCourses--> 5
+        // courses should be populated as [1,2,3,4][][][4][]
+        // the above list sugnifies that to take course 0, you have a prerequist to take courses 1,2,3,4
+
+        for(int i = 0; i < prerequisites.length; i++){
             graph.get(prerequisites[i][1]).add(prerequisites[i][0]);
         }
 
-        for(int i=0; i<numCourses; i++){
-            if(visited[i] == 0){
-                if(DFS(graph, visited, i, result)) return new int[0];
+        int[] visited = new int[numCourses];
+        int[] res = new int[numCourses];
+        List<Integer> result = new ArrayList<>();
+
+        for(int i = 0; i < graph.size(); i++){
+            if(!dfs(i, graph, visited, result)) return new int[0];
+        }
+
+        for(int i = 0; i < result.size(); i++){
+            res[i] = result.get(numCourses - i - 1);
+        }
+        return res;
+
+    }
+    public boolean dfs(int course, List<List<Integer>> graph, int[] visited, List<Integer> res){
+        if(visited[course] == 2){
+            return true;
+        }
+        if(visited[course] == 1){
+            return false;
+        }
+
+        visited[course] = 1;
+
+        List<Integer> neighbors = graph.get(course);
+
+        for(int i = 0; i < neighbors.size(); i++){
+            int currentCourse = neighbors.get(i); //(int)
+            //found a cycle
+            if(visited[currentCourse] == 1){
+                return false;
+            }else if(visited[currentCourse] == 0){
+                if(!dfs(currentCourse, graph, visited, res)) return false;
             }
         }
-
-        return result;
-
+        visited[course] = 2;
+        res.add(course);
+        return true;
     }
-
-    private boolean DFS(List<List<Integer>> graph, int[] visited, int i, int[] result){
-        if(visited[i] == 1) return true;
-        if(visited[i] == 2) return false;
-
-        visited[i] = 1;
-
-        List<Integer> neighbors = graph.get(i);
-
-        for(int j=0; neighbors != null && j<neighbors.size(); j++){
-            if(DFS(graph, visited, neighbors.get(j), result)) return true;
-        }
-
-        visited[i] = 2;
-        result[idx] = i;
-        idx--;
-        return false;
-    }
-
-
 }
 /*
 方法2：BFS 不太好写 建议用DFS的方法
