@@ -15,7 +15,7 @@ Sudoku Solver
         You may assume that the given Sudoku puzzle will have a single unique solution.
         The given board size is always 9x9.
         答案：using backtracking, easy to understand
-        
+
  */
 
 class Solution {
