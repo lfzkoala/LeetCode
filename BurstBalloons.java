@@ -27,7 +27,7 @@ Burst Balloons
         This helps us calculate coins without worrying about details inside [start, i - 1] and [i + 1, end]
         So the range can be divided into
         start - 1, maxCoin(start, i - 1), i, maxCoins(i + 1, end), end + 1
-        
+
  */
 
 
