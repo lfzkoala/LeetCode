@@ -10,7 +10,7 @@ Serialize and Deserialize Binary Search Tree
         Note: Do not use class member/global/static variables to store states. Your serialize and deserialize algorithms should be stateless.
 
         方法：
-        
+
  */
 public class Codec {
 
