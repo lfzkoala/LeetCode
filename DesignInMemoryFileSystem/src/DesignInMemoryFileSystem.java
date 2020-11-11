@@ -1,18 +1,16 @@
 import java.util.*;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
 public class DesignInMemoryFileSystem {
 
     public static void main(String[] args){
-        DesignInMemoryFileSystem P = new DesignInMemoryFileSystem();
-        P.DesignInMemoryFileSystem();
-        List<String> list = P.ls("/");
-        System.out.println(list);
-        P.mkdir("/a/b/c");
-        P.addContentToFile("/a/b/c/d", "hello");
-        String content = P.readContentFromFile("/a/b/c/d");
-        System.out.println(content);
-        boolean remove = P.remove("/a/b/c/d");
-        System.out.println(remove);
-        System.out.println(P.readContentFromFile("/a/b/c"));
+        Result result = JUnitCore.runClasses(DesiginInMemoryFileSystemTest.class);
+        if(result.wasSuccessful()) System.out.println("All test cases are passed");
+        for(Failure failure: result.getFailures()){
+            System.out.println(failure.toString());
+        }
 
 
     }
@@ -83,7 +81,7 @@ public class DesignInMemoryFileSystem {
 
     }
 
-    private boolean remove(String path){
+    public boolean remove(String path){
         String[] arr = path.split("/");
         Node cur = root;
         for(int i=1; i<arr.length; i++){
