@@ -131,7 +131,7 @@ public class ConnectFour {
 
     private static boolean checkAntiDiagonal(){
         for(int i=3; i<WIDTH; i++){
-            for(int j=0; j<HEIGHT; j++){
+            for(int j=0; j<HEIGHT-3; j++){
                 if(board[i][j] == token && board[i-1][j+1] == token &&
                 board[i-2][j+2] == token && board[i-3][j+3] == token){
                     return true;
