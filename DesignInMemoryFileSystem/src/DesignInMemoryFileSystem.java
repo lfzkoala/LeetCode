@@ -54,6 +54,38 @@ public class DesignInMemoryFileSystem {
         traverse(path);
     }
 
+    public boolean mkdirCheck(String path){
+        //same as mkdir, but with boolean return type. Also, if mkdir a duplicated path,
+        //it will return false
+        if(path == null || path.isEmpty() || path.equals("/") || !path.startsWith("/")) return false;
+
+        //the following is the same as traverse function, but added "isCreated" variable
+        String[] tokens = path.split("/");
+        Node cur = root;
+        boolean isCreated = false;
+        for(int i=1; i<tokens.length; i++){
+            if(!cur.map.containsKey(tokens[i])){
+                cur.map.put(tokens[i], new Node(tokens[i]));
+                isCreated = true;
+            }
+            cur = cur.map.get(tokens[i]);
+        }
+        return isCreated;
+    }
+
+    public void createFile(String path, String fileName, String content){
+        Node cur = traverse(path);
+        if(cur.map.containsKey(fileName)){
+            addContentToFile(path, content);
+        }else{
+            Node newNode = new Node(fileName);
+            newNode.isFile = true;
+            cur.map.put(fileName, newNode);
+            addContentToFile(path, content);
+        }
+    }
+
+
     public void addContentToFile(String filePath, String content) {
         Node node = traverse(filePath);
         node.isFile = true;
